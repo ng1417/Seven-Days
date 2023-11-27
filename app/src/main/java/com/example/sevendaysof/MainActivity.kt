@@ -13,26 +13,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.sevendaysof.ui.theme.SevenDaysOfTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-
 import androidx.compose.ui.unit.dp
 import com.example.sevendaysof.data.Animal
 import com.example.sevendaysof.data.AnimalData
+import com.example.sevendaysof.data.AnimalData.animals
 
+@OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +41,27 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AnimalList()
-                }
+                      SevenDaysApp()
+                  }
             }
         }
     }
+}
+@ExperimentalMaterial3Api
+@Composable
+fun SevenDaysApp() {
+    Scaffold(topBar = {
+            TopAppBar()
+        }) {it ->
+        LazyColumn(contentPadding = it) {
+          items(animals) {
+              AnimalCard(
+                  animal = it,
+                modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
+                )
+            }
+       }
+   }
 }
 @Composable
 fun AnimalList() {
@@ -67,7 +82,9 @@ fun AnimalList() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AnimalCard(animal: Animal) {
+fun AnimalCard(
+    animal: Animal,
+    modifier: Modifier = Modifier) {
 
     Card(
         modifier = Modifier
@@ -81,11 +98,13 @@ fun AnimalCard(animal: Animal) {
                 .background(MaterialTheme.colorScheme.background)
         ) {
             Image(
-                painter = painterResource(id = animal.imageResourceId),
-                contentDescription = null,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .clip(shape = MaterialTheme.shapes.medium)
+                    .size(dimensionResource(R.dimen.image_size))
+                    .clip(MaterialTheme.shapes.medium),
+                contentScale = ContentScale.Crop,
+                painter = painterResource(animal.imageResourceId),
+                contentDescription = null,
+
             )
 
             Column(
@@ -97,8 +116,6 @@ fun AnimalCard(animal: Animal) {
                 // Display the name from the resource ID
                 Text(
                     text = stringResource(id = animal.nameResourceId),
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.headlineMedium
                 )
 
@@ -107,7 +124,6 @@ fun AnimalCard(animal: Animal) {
                 // Display the tip
                 Text(
                     text = stringResource(id = animal.tipResourceId),
-                    color = Color.White,
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
@@ -115,6 +131,35 @@ fun AnimalCard(animal: Animal) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopAppBar(modifier: Modifier = Modifier) {
+    CenterAlignedTopAppBar(
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    modifier = Modifier
+                        .size(dimensionResource(R.dimen.image_size))
+                        .padding(dimensionResource(R.dimen.padding_small)),
+                    painter = painterResource(R.drawable.ic_action_name),
+
+                    // Content Description is not needed here - image is decorative, and setting a
+                    // null content description allows accessibility services to skip this element
+                    // during navigation.
+
+                    contentDescription = null
+                )
+                Text(
+                    text = stringResource(R.string.text_tips_from_animals),
+                    style = MaterialTheme.typography.displayLarge
+                )
+            }
+        },
+        modifier = modifier
+    )
+}
 
 @Preview(showBackground = true)
 @Composable

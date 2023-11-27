@@ -20,6 +20,7 @@
     <string name="rabbit_tip">Chew on hay for healthy teeth</string>
     <string name="red_panda_tip">Climb trees with agility</string>
     <string name="squirrel_tip">Collect and store nuts</string>
+    <string name="text_tips_from_animals">Tips from animals</string>
 
 
 </resources>
