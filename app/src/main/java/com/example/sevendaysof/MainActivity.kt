@@ -3,6 +3,7 @@ package com.example.sevendaysof
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -16,14 +17,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.sevendaysof.ui.theme.SevenDaysOfTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -41,8 +45,7 @@ class MainActivity : ComponentActivity() {
             SevenDaysOfTheme {
                   Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
+                      ) {
                       SevenDaysApp()
                   }
             }
@@ -74,7 +77,7 @@ fun AnimalList() {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(R.dimen.padding_small))
+            .padding(dimensionResource(R.dimen.padding_small)),
     ) {
         items(animals) { animal ->
             AnimalCard(animal)
@@ -88,16 +91,22 @@ fun AnimalCard(
     animal: Animal,
     modifier: Modifier = Modifier
 ) {
+    var isCardClicked by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { isCardClicked = !isCardClicked },
+        colors = CardDefaults.cardColors(
+            containerColor =
+            MaterialTheme.colorScheme.onSecondaryContainer),
 
-        onClick = { /* Handle card click */ }
+       // onClick = { /* Handle card click */ }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colorScheme.tertiary)
         ) {
             Row(
                 modifier = Modifier
@@ -118,21 +127,27 @@ fun AnimalCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            dimensionResource(R.dimen.padding_small)
+                            dimensionResource(R.dimen.padding_small))
+                                .animateContentSize(animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioHighBouncy,
+                                    stiffness = Spring.StiffnessMediumLow
+                                )
                         ),
                 ) {
                     Text(
                         text = stringResource(id = animal.nameResourceId),
-                        style = MaterialTheme.typography.headlineMedium
+                        style = MaterialTheme.typography.headlineLarge
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
 
                     // Display the tip - haven't got this animated
-                    Text(
-                        text = stringResource(id = animal.tipResourceId),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
+                    AnimatedVisibility(visible = isCardClicked) {
+                        Text(
+                            text = stringResource(id = animal.tipResourceId),
+                            style = MaterialTheme.typography.bodyLarge,
+                            )
+                    }
                 }
             }
         }
@@ -167,7 +182,7 @@ fun TopAppBar(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun AnimalListPreview() {
-    SevenDaysOfTheme(useDarkTheme = true){
+    SevenDaysOfTheme(useDarkTheme = false){
 
         AnimalList()
     }
