@@ -103,11 +103,13 @@ fun AnimalCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            dimensionResource(R.dimen.padding_small))
-                                .animateContentSize(animationSpec = spring(
-                                    dampingRatio = Spring.DampingRatioHighBouncy,
-                                    stiffness = Spring.StiffnessMediumLow
-                                )
+                            dimensionResource(R.dimen.padding_small)
+                        )
+                        .animateContentSize(
+                            animationSpec = spring(
+                                dampingRatio = Spring.DampingRatioHighBouncy,
+                                stiffness = Spring.StiffnessMediumLow
+                            )
                         ),
                 ) {
                     AnimalNames(animal.nameResourceId)
@@ -176,13 +178,13 @@ fun TopAppBar(modifier: Modifier = Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-//                Image(
-//                    modifier = Modifier
-//                        .size(dimensionResource(R.dimen.image_size))
-//                        .padding(dimensionResource(R.dimen.padding_small)),
-////                    painter = painterResource(R.drawable.ic_woof_logo),
-////                    contentDescription = null
-//                )
+                Image(
+                    modifier = Modifier
+                        .size(dimensionResource(R.dimen.image_size))
+                        .padding(dimensionResource(R.dimen.padding_small)),
+                    painter = painterResource(R.drawable.ic_action_name),
+                    contentDescription = stringResource(R.string.image_for_app_bar)
+                )
                 Text(
                     text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.displayMedium

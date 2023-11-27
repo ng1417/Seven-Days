@@ -31,5 +31,6 @@
     <string name="rabbit_image">Image of rabbit</string>
     <string name="red_panda_image">Image of red panda</string>
     <string name="squirrel_image">Image of squirrel</string>
+    <string name="image_for_app_bar">Place holder image for app bar</string>
 
 </resources>
