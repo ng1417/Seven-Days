@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Seven Days Of</string>
+        <!-- Dummy data for animals -->
+        <string name="cat">Cat</string>
+        <string name="guineapig">Guinea Pig</string>
+        <string name="hedgehog">Hedgehog</string>
+        <string name="owl">Owl</string>
+        <string name="pug">Pug</string>
+        <string name="rabbit">Rabbit</string>
+        <string name="red_panda">Red Panda</string>
+        <string name="squirrel">Squirrel</string>
+
+        <!-- Dummy data for animal descriptions -->
+        <string name="cat_description">A fluffy and independent feline friend.</string>
+        <string name="guineapig_description">A small, sociable rodent with a distinctive appearance.</string>
+        <string name="hedgehog_description">A cute and spiky creature with a love for insects.</string>
+        <string name="owl_description">A wise bird of prey with nocturnal habits.</string>
+        <string name="pug_description">A charming and playful small dog breed.</string>
+        <string name="rabbit_description">A gentle herbivore known for its long ears and hopping gait.</string>
+        <string name="red_panda_description">A cute, bamboo-loving mammal with a reddish-brown coat.</string>
+        <string name="squirrel_description">A nimble and bushy-tailed rodent often found in trees.</string>
+
+
+</resources>
