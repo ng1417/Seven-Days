@@ -90,8 +90,8 @@ fun AnimalCard(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp),
+            .fillMaxWidth(),
+
         onClick = { /* Handle card click */ }
     ) {
         Column(
