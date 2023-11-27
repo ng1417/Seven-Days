@@ -11,7 +11,7 @@ import com.example.sevendaysof.R
 val Raleway = FontFamily(
     Font(R.font.raleway_regular
         ),
-    Font(R.font.raleway_bold)
+    Font(R.font.raleway_bold, FontWeight.Bold)
 )
 
 
@@ -20,15 +20,15 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = Raleway,
         fontWeight = FontWeight.Normal,
-        fontSize = 36.sp,
-        lineHeight = 36.sp,
+        fontSize = 24.sp,
+        lineHeight = 38.sp,
         letterSpacing = 0.5.sp
     ),
 
     headlineLarge = TextStyle(
         fontFamily = Raleway,
         fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
+        fontSize = 24.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
