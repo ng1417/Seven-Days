@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Seven Days Of</string>
+    <string name="app_name">7 Days Of Furr</string>
     <!-- Dummy data for animals -->
     <string name="cat">Cat</string>
     <string name="guineapig">Guinea Pig</string>
@@ -22,5 +22,14 @@
     <string name="squirrel_tip">Collect and store nuts</string>
     <string name="text_tips_from_animals">Tips from animals</string>
 
+    <!-- Dummy description for images -->
+    <string name="cat_image">Image of cat</string>
+    <string name="guineapig_image">Image of guinea pig</string>
+    <string name="hedgehog_image">Image of hedgehog</string>
+    <string name="owl_image">Image of owl</string>
+    <string name="pug_image">Image of pug</string>
+    <string name="rabbit_image">Image of rabbit</string>
+    <string name="red_panda_image">Image of red panda</string>
+    <string name="squirrel_image">Image of squirrel</string>
 
 </resources>

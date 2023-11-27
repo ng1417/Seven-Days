@@ -3,6 +3,8 @@ package com.example.sevendaysof
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -14,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.sevendaysof.ui.theme.SevenDaysOfTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.example.sevendaysof.data.Animal
 import com.example.sevendaysof.data.AnimalData
 import com.example.sevendaysof.data.AnimalData.animals
+import com.example.sevendaysof.ui.theme.SevenDaysOfTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
@@ -58,34 +60,18 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SevenDaysApp() {
     Scaffold(topBar = {
-            TopAppBar()
+        TopAppBar()
         }) {it ->
-        LazyColumn(contentPadding = it) {
-          items(animals) {
-              AnimalCard(
-                  animal = it,
-                  modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
-                )
+            LazyColumn(contentPadding = it) {
+                items(animals) {
+                    AnimalCard(
+                      animal = it,
+                      modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
+                    )
             }
        }
    }
 }
-@Composable
-fun AnimalList() {
-    val animals = AnimalData.animals
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(dimensionResource(R.dimen.padding_small)),
-    ) {
-        items(animals) { animal ->
-            AnimalCard(animal)
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-    }
-}
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimalCard(
     animal: Animal,
@@ -94,35 +80,25 @@ fun AnimalCard(
     var isCardClicked by remember { mutableStateOf(false) }
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { isCardClicked = !isCardClicked },
-        colors = CardDefaults.cardColors(
-            containerColor =
-            MaterialTheme.colorScheme.onSecondaryContainer),
 
        // onClick = { /* Handle card click */ }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.tertiary)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
             ) {
-                Image(
-                    modifier = Modifier
-                        .size(dimensionResource(R.dimen.image_size))
-                        .clip(MaterialTheme.shapes.medium),
-                    contentScale = ContentScale.Crop,
-                    painter = painterResource(animal.imageResourceId),
-                    contentDescription = null,
-                )
+                AnimalIcon(animal.imageResourceId, animal.descriptionId)
 
                 Spacer(modifier = Modifier.width(16.dp))
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -134,23 +110,61 @@ fun AnimalCard(
                                 )
                         ),
                 ) {
-                    Text(
-                        text = stringResource(id = animal.nameResourceId),
-                        style = MaterialTheme.typography.headlineLarge
-                    )
+                    AnimalNames(animal.nameResourceId)
 
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    // Display the tip - haven't got this animated
-                    AnimatedVisibility(visible = isCardClicked) {
-                        Text(
-                            text = stringResource(id = animal.tipResourceId),
-                            style = MaterialTheme.typography.bodyLarge,
-                            )
+                    if (isCardClicked) {
+                        AnimalTips(
+                            animal.tipResourceId,
+                            modifier = Modifier
+                        )
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun AnimalIcon(
+    @DrawableRes imageResourceId: Int,
+    @StringRes descriptionId: Int,
+    modifier: Modifier = Modifier
+) {
+    Image(
+        modifier = modifier
+            .size(dimensionResource(R.dimen.image_size))
+            .clip(MaterialTheme.shapes.medium),
+        contentScale = ContentScale.Crop,
+        painter = painterResource(imageResourceId),
+        contentDescription = stringResource(descriptionId),
+    )
+}
+
+@Composable
+fun AnimalNames(
+    @StringRes nameResourceId: Int,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = stringResource(nameResourceId),
+        style = MaterialTheme.typography.headlineLarge
+    )
+}
+
+@Composable
+fun AnimalTips(
+    @StringRes tipResourceId: Int,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            text = stringResource(tipResourceId),
+            style = MaterialTheme.typography.bodyLarge
+        )
     }
 }
 
@@ -162,16 +176,16 @@ fun TopAppBar(modifier: Modifier = Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    modifier = Modifier
-                        .size(dimensionResource(R.dimen.image_size))
-                        .padding(dimensionResource(R.dimen.padding_small)),
-                    painter = painterResource(R.drawable.ic_action_name),
-                    contentDescription = null
-                )
+//                Image(
+//                    modifier = Modifier
+//                        .size(dimensionResource(R.dimen.image_size))
+//                        .padding(dimensionResource(R.dimen.padding_small)),
+////                    painter = painterResource(R.drawable.ic_woof_logo),
+////                    contentDescription = null
+//                )
                 Text(
-                    text = stringResource(R.string.text_tips_from_animals),
-                    style = MaterialTheme.typography.displayLarge
+                    text = stringResource(R.string.app_name),
+                    style = MaterialTheme.typography.displayMedium
                 )
             }
         },
@@ -179,19 +193,11 @@ fun TopAppBar(modifier: Modifier = Modifier) {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun AnimalListPreview() {
     SevenDaysOfTheme(useDarkTheme = false){
-
-        AnimalList()
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AnimalCardPreview() {
-    SevenDaysOfTheme  {
-        AnimalCard(Animal(R.string.cat, R.drawable.guineapig, R.string.cat_tip))
+        SevenDaysApp()
     }
 }
