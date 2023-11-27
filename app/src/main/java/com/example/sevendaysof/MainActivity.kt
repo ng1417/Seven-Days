@@ -13,10 +13,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.sevendaysof.ui.theme.SevenDaysOfTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -63,7 +68,6 @@ fun AnimalList() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimalCard(animal: Animal) {
-    val context = LocalContext.current
 
     Card(
         modifier = Modifier
@@ -90,24 +94,27 @@ fun AnimalCard(animal: Animal) {
                     .padding(16.dp),
                 verticalArrangement = Arrangement.Bottom
             ) {
+                // Display the name from the resource ID
                 Text(
-                    text = stringResource(animal.name),
+                    text = stringResource(id = animal.nameResourceId),
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.displayMedium
+                    style = MaterialTheme.typography.headlineMedium
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
+                // Display the tip
                 Text(
-                    text = stringResource(animal.descriptionResourceId),
+                    text = stringResource(id = animal.tipResourceId),
                     color = Color.White,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -117,12 +124,11 @@ fun AnimalListPreview() {
         AnimalList()
     }
 }
-/*
+
 @Preview(showBackground = true)
 @Composable
 fun AnimalCardPreview() {
     SevenDaysOfTheme  {
-        AnimalCard(R.string.cat = "cat")
+        AnimalCard(Animal(R.string.cat, R.drawable.guineapig, R.string.cat_tip))
     }
 }
-*/
