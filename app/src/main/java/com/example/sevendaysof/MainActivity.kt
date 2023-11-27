@@ -3,6 +3,9 @@ package com.example.sevendaysof
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -25,7 +28,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.sevendaysof.data.Animal
 import com.example.sevendaysof.data.AnimalData
@@ -47,6 +49,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
 @ExperimentalMaterial3Api
 @Composable
 fun SevenDaysApp() {
@@ -57,7 +61,7 @@ fun SevenDaysApp() {
           items(animals) {
               AnimalCard(
                   animal = it,
-                modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
+                  modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
                 )
             }
        }
@@ -70,7 +74,7 @@ fun AnimalList() {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(dimensionResource(R.dimen.padding_small))
     ) {
         items(animals) { animal ->
             AnimalCard(animal)
@@ -78,54 +82,58 @@ fun AnimalList() {
         }
     }
 }
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimalCard(
     animal: Animal,
-    modifier: Modifier = Modifier) {
-
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp),
         onClick = { /* Handle card click */ }
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            Image(
-                modifier = Modifier
-                    .size(dimensionResource(R.dimen.image_size))
-                    .clip(MaterialTheme.shapes.medium),
-                contentScale = ContentScale.Crop,
-                painter = painterResource(animal.imageResourceId),
-                contentDescription = null,
-
-            )
-
-            Column(
+            Row(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
-                verticalArrangement = Arrangement.Bottom
             ) {
-                // Display the name from the resource ID
-                Text(
-                    text = stringResource(id = animal.nameResourceId),
-                    style = MaterialTheme.typography.headlineMedium
+                Image(
+                    modifier = Modifier
+                        .size(dimensionResource(R.dimen.image_size))
+                        .clip(MaterialTheme.shapes.medium),
+                    contentScale = ContentScale.Crop,
+                    painter = painterResource(animal.imageResourceId),
+                    contentDescription = null,
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.width(16.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            dimensionResource(R.dimen.padding_small)
+                        ),
+                ) {
+                    Text(
+                        text = stringResource(id = animal.nameResourceId),
+                        style = MaterialTheme.typography.headlineMedium
+                    )
 
-                // Display the tip
-                Text(
-                    text = stringResource(id = animal.tipResourceId),
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    // Display the tip - haven't got this animated
+                    Text(
+                        text = stringResource(id = animal.tipResourceId),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
             }
         }
     }
@@ -144,11 +152,6 @@ fun TopAppBar(modifier: Modifier = Modifier) {
                         .size(dimensionResource(R.dimen.image_size))
                         .padding(dimensionResource(R.dimen.padding_small)),
                     painter = painterResource(R.drawable.ic_action_name),
-
-                    // Content Description is not needed here - image is decorative, and setting a
-                    // null content description allows accessibility services to skip this element
-                    // during navigation.
-
                     contentDescription = null
                 )
                 Text(
@@ -164,7 +167,7 @@ fun TopAppBar(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun AnimalListPreview() {
-    SevenDaysOfTheme {
+    SevenDaysOfTheme(useDarkTheme = true){
 
         AnimalList()
     }

@@ -71,6 +71,7 @@ private val DarkColors = darkColorScheme(
     scrim = md_theme_dark_scrim,
 )
 
+
 @Composable
 fun  SevenDaysOfTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
